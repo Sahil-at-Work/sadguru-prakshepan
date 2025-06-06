@@ -4,8 +4,8 @@ import { Subject, Question } from '../types';
 // // These would typically come from environment variables
 // const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://your-supabase-url.supabase.co';
 // const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'your-anon-key';
-const supabaseUrl = "https://hjnbagvfgfwzerysblwo.supabase.co";
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhqbmJhZ3ZmZ2Z3emVyeXNibHdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4NDAzMzksImV4cCI6MjA2NDQxNjMzOX0.Dv-hlcN7MUklji8Stlcd89tOeIjGRfCvh6Lj8eYtekY';
+const supabaseUrl = "https://wrtblmqhkjwiskdpmnjs.supabase.co";
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndydGJsbXFoa2p3aXNrZHBtbmpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkxODE4MTgsImV4cCI6MjA2NDc1NzgxOH0.0cC_11biQ9UlmcLq-prEv00F1_ReLmQvOYmE_TVzQ_s';
 
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);

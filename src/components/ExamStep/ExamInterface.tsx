@@ -3,6 +3,7 @@ import { Question, CorrectOption, UserAnswer, ExamResult } from '../../types';
 import { fetchQuestionsByConfig } from '../../lib/supabase';
 import { ExamConfig } from '../../types';
 import { calculateExamDuration, formatTimeSpent } from '../../lib/timerUtils';
+import { trackExamComplete, trackQuestionAnswer } from '../Analytics/AnalyticsProvider';
 import QuestionCard from './QuestionCard';
 import ExamProgress from './ExamProgress';
 import ExamNavigation from './ExamNavigation';
@@ -65,8 +66,19 @@ const ExamInterface: React.FC<ExamInterfaceProps> = ({
   
   const handleAnswerChange = (option: CorrectOption) => {
     const newAnswers = [...userAnswers];
+    const previousAnswer = newAnswers[currentQuestion].selectedOption;
     newAnswers[currentQuestion].selectedOption = option;
     setUserAnswers(newAnswers);
+
+    // Track question answer if it's a new answer (not changing existing answer)
+    if (previousAnswer === null) {
+      const currentQuestionData = questions[currentQuestion];
+      trackQuestionAnswer({
+        questionId: currentQuestionData.id,
+        subject: currentQuestionData.subject,
+        isCorrect: option === currentQuestionData.correct_option,
+      });
+    }
   };
   
   const handleNext = () => {
@@ -134,6 +146,14 @@ const ExamInterface: React.FC<ExamInterfaceProps> = ({
     
     // Calculate percentage
     result.percentage = (result.correctAnswers / result.totalQuestions) * 100;
+    
+    // Track exam completion
+    trackExamComplete({
+      totalQuestions: result.totalQuestions,
+      correctAnswers: result.correctAnswers,
+      percentage: result.percentage,
+      timeSpent: result.timeSpent,
+    });
     
     onComplete(result);
   };

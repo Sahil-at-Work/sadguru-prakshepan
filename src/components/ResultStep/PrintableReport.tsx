@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { ExamResult } from '../../types';
 import Button from '../ui/Button';
+import { trackPrintReport } from '../Analytics/AnalyticsProvider';
 import { Printer } from 'lucide-react';
 
 interface PrintableReportProps {
@@ -11,6 +12,8 @@ const PrintableReport: React.FC<PrintableReportProps> = ({ result }) => {
   const reportRef = useRef<HTMLDivElement>(null);
   
   const handlePrint = () => {
+    trackPrintReport();
+    
     const printContent = reportRef.current?.innerHTML || '';
     const originalContent = document.body.innerHTML;
     

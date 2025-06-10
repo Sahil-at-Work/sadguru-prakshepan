@@ -6,6 +6,7 @@ import NumberInput from './NumberInput';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
 import { validateQuestionAvailability } from '../../lib/supabase';
+import { trackConfigurationChange } from '../Analytics/AnalyticsProvider';
 import { PlayCircle } from 'lucide-react';
 
 interface ExamConfigFormProps {
@@ -22,6 +23,7 @@ const ExamConfigForm: React.FC<ExamConfigFormProps> = ({ onStartExam }) => {
 
   const handleSubjectsChange = (newSubjects: Subject[]) => {
     setSubjects(newSubjects);
+    trackConfigurationChange('subjects', newSubjects);
     
     // Reset tags when subjects change
     setTags([]);
@@ -33,10 +35,16 @@ const ExamConfigForm: React.FC<ExamConfigFormProps> = ({ onStartExam }) => {
 
   const handleTagsChange = (newTags: string[]) => {
     setTags(newTags);
+    trackConfigurationChange('tags', newTags);
     
     // Reset validation
     setMaxAvailable(null);
     setValidationError(null);
+  };
+
+  const handleNumberOfQuestionsChange = (newNumber: number) => {
+    setNumberOfQuestions(newNumber);
+    trackConfigurationChange('numberOfQuestions', newNumber);
   };
 
   useEffect(() => {
@@ -117,7 +125,7 @@ const ExamConfigForm: React.FC<ExamConfigFormProps> = ({ onStartExam }) => {
         <NumberInput
           label="Number of Questions"
           value={numberOfQuestions}
-          onChange={setNumberOfQuestions}
+          onChange={handleNumberOfQuestionsChange}
           min={1}
           max={maxAvailable || undefined}
           errorMessage={
